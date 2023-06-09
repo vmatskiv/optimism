@@ -3,12 +3,15 @@ package cli
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/ethereum-optimism/optimism/indexer"
-	"github.com/ethereum-optimism/optimism/indexer/config"
-	"github.com/ethereum-optimism/optimism/op-service/log"
 	"github.com/ethereum-optimism/optimism/op-service/opio"
 
+	"github.com/ethereum-optimism/optimism/indexer/api"
+	"github.com/ethereum-optimism/optimism/indexer/config"
+	"github.com/ethereum-optimism/optimism/indexer/database"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/params"
 
 	"github.com/urfave/cli/v2"
@@ -23,12 +26,14 @@ type Cli struct {
 }
 
 func runIndexer(ctx *cli.Context) error {
-	logger := log.NewLogger(log.ReadCLIConfig(ctx))
+	// TODO old pr rebase fixme
+	// logger := log.NewLogger(log.ReadCLIConfig(ctx))
 
 	configPath := ctx.String(ConfigFlag.Name)
 	cfg, err := config.LoadConfig(configPath)
 	if err != nil {
-		logger.Error("failed to load config", "err", err)
+		// TODO old pr rebase fixme
+		// logger.Error("failed to load config", "err", err)
 		return err
 	}
 
@@ -47,21 +52,34 @@ func runIndexer(ctx *cli.Context) error {
 	return indexer.Run(indexerCtx)
 }
 
+// Maybe make NewDB take a config.DBConfig instead of a string in future cleanup
+func getDsn(dbConf config.DBConfig) string {
+	return fmt.Sprintf("postgresql://%s:%s@%s:%s/%s", dbConf.User, dbConf.Password, dbConf.Host, dbConf.Port, dbConf.Name)
+}
+
 func runApi(ctx *cli.Context) error {
-	logger := log.NewLogger(log.ReadCLIConfig(ctx))
+	// TODO old pr rebase fixme
+	// logger := log.NewLogger(log.ReadCLIConfig(ctx))
 
 	configPath := ctx.String(ConfigFlag.Name)
-	cfg, err := config.LoadConfig(configPath)
+	conf, err := config.LoadConfig(configPath)
 	if err != nil {
-		logger.Error("failed to load config", "err", err)
+		// TODO old pr rebase fixme
+		// logger.Error("failed to load config", "err", err)
 		return err
 	}
 
-	cfg.Logger = logger
-	fmt.Println(cfg)
+	db, err := database.NewDB(getDsn(conf.DB))
 
-	// finish me
-	return err
+	if err != nil {
+		log.Crit("Failed to connect to database", "message", err)
+	}
+
+	// TODO old pr fix me
+	// server := api.NewApi(db.Bridge)
+
+	// TODO old pr fix me
+	// return server.Listen(strconv.Itoa(conf.API.Port))
 }
 
 var (
@@ -90,7 +108,8 @@ func (c *Cli) Run(args []string) error {
 }
 
 func NewCli(GitVersion string, GitCommit string, GitDate string) *Cli {
-	flags := append([]cli.Flag{ConfigFlag}, log.CLIFlags("INDEXER")...)
+	// TODO old pr fix me
+	// flags := append([]cli.Flag{ConfigFlag}, log.CLIFlags("INDEXER")...)
 	app := &cli.App{
 		Version:     fmt.Sprintf("%s-%s", GitVersion, params.VersionWithCommit(GitCommit, GitDate)),
 		Description: "An indexer of all optimism events with a serving api layer",
