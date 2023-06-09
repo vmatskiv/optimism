@@ -39,6 +39,7 @@ type DBConfig struct {
 	Name     string
 	User     string
 	Password string
+	Name     string
 }
 
 // APIConfig configures the API server
