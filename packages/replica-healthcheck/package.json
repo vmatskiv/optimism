@@ -9,7 +9,7 @@
     "dist/*"
   ],
   "scripts": {
-    "start": "ts-node ./src/service",
+    "start": "tsx ./src/service",
     "test:coverage": "echo 'No tests defined.'",
     "build": "tsc -p tsconfig.json",
     "clean": "rimraf ./dist ./tsconfig.tsbuildinfo",
@@ -38,6 +38,6 @@
     "@ethersproject/abstract-provider": "^5.7.0"
   },
   "devDependencies": {
-    "ts-node": "^10.9.1"
+    "tsx": "^3.12.7"
   }
 }
