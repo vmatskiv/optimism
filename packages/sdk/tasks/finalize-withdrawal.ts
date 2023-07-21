@@ -90,7 +90,7 @@ task('finalize-withdrawal', 'Finalize a withdrawal')
       },
       contracts: {
         l1: {
-          L1StandardBridge: Deployment__L1StandardBridgeProxy?.address,
+          L1StandardBridge: (Deployment__L1StandardBridgeProxy as any).address,
           L1CrossDomainMessenger: (
             Deployment__L1CrossDomainMessengerProxy as any
           ).address,
