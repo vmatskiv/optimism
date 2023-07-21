@@ -60,6 +60,22 @@ task('finalize-withdrawal', 'Finalize a withdrawal')
       'OptimismPortalProxy'
     )
 
+    if (Deployment__L1StandardBridgeProxy === undefined) {
+      throw new Error('No L1StandardBridgeProxy deployment')
+    }
+
+    if (Deployment__L1CrossDomainMessengerProxy === undefined) {
+      throw new Error('No L1CrossDomainMessengerProxy deployment')
+    }
+
+    if (Deployment__L2OutputOracleProxy === undefined) {
+      throw new Error('No L2OutputOracleProxy deployment')
+    }
+
+    if (Deployment__OptimismPortalProxy === undefined) {
+      throw new Error('No OptimismPortalProxy deployment')
+    }
+
     const messenger = new CrossChainMessenger({
       l1SignerOrProvider: signer,
       l2SignerOrProvider: l2Signer,
@@ -68,7 +84,7 @@ task('finalize-withdrawal', 'Finalize a withdrawal')
       bridges: {
         Standard: {
           Adapter: StandardBridgeAdapter,
-          l1Bridge: Deployment__L1StandardBridgeProxy?.address,
+          l1Bridge: (Deployment__L1StandardBridgeProxy as any).address,
           l2Bridge: predeploys.L2StandardBridge,
         },
       },
@@ -76,9 +92,9 @@ task('finalize-withdrawal', 'Finalize a withdrawal')
         l1: {
           L1StandardBridge: Deployment__L1StandardBridgeProxy?.address,
           L1CrossDomainMessenger:
-            Deployment__L1CrossDomainMessengerProxy?.address,
-          L2OutputOracle: Deployment__L2OutputOracleProxy?.address,
-          OptimismPortal: Deployment__OptimismPortalProxy?.address,
+            (Deployment__L1CrossDomainMessengerProxy as any).address,
+          L2OutputOracle: (Deployment__L2OutputOracleProxy as any).address,
+          OptimismPortal: (Deployment__OptimismPortalProxy as any).address,
         },
       },
     })
