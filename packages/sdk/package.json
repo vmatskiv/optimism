@@ -36,6 +36,10 @@
     "url": "https://github.com/ethereum-optimism/optimism.git"
   },
   "devDependencies": {
+    "@types/node": "12.20.55",
+    "@types/mocha": "^8.2.2",
+    "@types/chai": "^4.2.18",
+    "@types/chai-as-promised": "^7.1.4",
     "@ethersproject/abstract-provider": "^5.7.0",
     "@ethersproject/abstract-signer": "^5.7.0",
     "@ethersproject/transactions": "^5.7.0",
