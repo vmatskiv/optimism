@@ -91,8 +91,9 @@ task('finalize-withdrawal', 'Finalize a withdrawal')
       contracts: {
         l1: {
           L1StandardBridge: Deployment__L1StandardBridgeProxy?.address,
-          L1CrossDomainMessenger:
-            (Deployment__L1CrossDomainMessengerProxy as any).address,
+          L1CrossDomainMessenger: (
+            Deployment__L1CrossDomainMessengerProxy as any
+          ).address,
           L2OutputOracle: (Deployment__L2OutputOracleProxy as any).address,
           OptimismPortal: (Deployment__OptimismPortalProxy as any).address,
         },
