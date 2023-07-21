@@ -32,7 +32,6 @@
     "preinstall": "npx only-allow pnpm",
     "lint:ts:check": "eslint . --max-warnings=0",
     "lint:forge-tests:check": "tsx scripts/forge-test-names.ts",
-    "lint:forge-tests:check": "ts-node scripts/forge-test-names.ts",
     "lint:contracts:check": "pnpm solhint -f table 'contracts/**/!(DisputeTypes|RLPReader|EAS|SchemaRegistry|IEAS|ISchemaRegistry|SchemaResolver|EIP712Verifier|ISchemaResolver).sol' && pnpm prettier --check 'contracts/**/!(DisputeTypes|RLPReader|EAS|SchemaRegistry|IEAS|ISchemaRegistry|SchemaResolver|EIP712Verifier|ISchemaResolver).sol' && pnpm lint:forge-tests:check",
     "lint:check": "pnpm lint:contracts:check && pnpm lint:ts:check",
     "lint:ts:fix": "eslint --fix .",

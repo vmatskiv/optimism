@@ -231,7 +231,7 @@ export class FaultDetector extends BaseServiceV2<Options, Metrics, State> {
   }
 
   async routes(router: ExpressRouter): Promise<void> {
-    router.get('/status', async (req, res) => {
+    (router as any).get('/status', async (req, res) => {
       return res.status(200).json({
         ok: !this.state.diverged,
       })
@@ -387,7 +387,7 @@ export class FaultDetector extends BaseServiceV2<Options, Metrics, State> {
           new Date(
             (ethers.BigNumber.from(outputBlock.timestamp).toNumber() +
               this.state.faultProofWindow) *
-              1000
+            1000
           ),
           'mmmm dS, yyyy, h:MM:ss TT'
         ),
