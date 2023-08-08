@@ -22,75 +22,6 @@ const (
 	zoraMainnet = 7777777
 )
 
-var genesisSysConfigs = map[uint64]eth.SystemConfig{
-	opMainnet: {
-		BatcherAddr: common.HexToAddress("0x6887246668a3b87f54deb3b94ba47a6f63f32985"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000000bc")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000a6fe0")),
-		GasLimit:    30_000_000,
-	},
-	opGoerli: {
-		BatcherAddr: common.HexToAddress("0x7431310e026B69BFC676C0013E12A1A11411EEc9"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000834")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000f4240")),
-		GasLimit:    25_000_000,
-	},
-	opSepolia: {
-		BatcherAddr: common.HexToAddress("0x7431310e026b69bfc676c0013e12a1a11411eec9"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000000bc")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000a6fe0")),
-		GasLimit:    30_000_000,
-	},
-	baseGoerli: {
-		BatcherAddr: common.HexToAddress("0x2d679b567db6187c0c8323fa982cfb88b74dbcc7"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000834")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000f4240")),
-		GasLimit:    25_000_000,
-	},
-	baseMainnet: {
-		BatcherAddr: common.HexToAddress("0x5050f69a9786f081509234f1a7f4684b5e5b76c9"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000000bc")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000a6fe0")),
-		GasLimit:    30_000_000,
-	},
-	pgnSepolia: {
-		BatcherAddr: common.HexToAddress("0x7224e05E6cF6E07aFBE1eFa09a3fA23A637DD485"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000834")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000f4240")),
-		GasLimit:    30_000_000,
-	},
-	pgnMainnet: {
-		BatcherAddr: common.HexToAddress("0x99526b0e49A95833E734EB556A6aBaFFAb0Ee167"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000000bc")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000a6fe0")),
-		GasLimit:    30_000_000,
-	},
-	zoraGoerli: {
-		BatcherAddr: common.HexToAddress("0x427c9a666d3b27873111cE3894712Bf64C6343A0"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x0000000000000000000000000000000000000000000000000000000000000834")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000f4240")),
-		GasLimit:    30_000_000,
-	},
-	zoraMainnet: {
-		BatcherAddr: common.HexToAddress("0x625726c858dBF78c0125436C943Bf4b4bE9d9033"),
-		Overhead:    eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000000bc")),
-		Scalar:      eth.Bytes32(common.HexToHash("0x00000000000000000000000000000000000000000000000000000000000a6fe0")),
-		GasLimit:    30_000_000,
-	},
-}
-
-var depositContractAddrs = map[uint64]common.Address{
-	opMainnet: common.HexToAddress("0xbEb5Fc579115071764c7423A4f12eDde41f106Ed"),
-	opGoerli:  common.HexToAddress("0x5b47E1A08Ea6d985D6649300584e6722Ec4B1383"),
-	opSepolia: common.HexToAddress("0x8f6452d842438c4e22ba18baa21652ff65530df4"),
-	baseGoerli: common.HexToAddress("0xe93c8cd0d409341205a592f8c4ac1a5fe5585cfa"),
-	baseMainnet: common.HexToAddress("0x49048044d57e1c92a77f79988d21fa8faf74e97e"),
-	pgnSepolia: common.HexToAddress("0xF04BdD5353Bb0EFF6CA60CfcC78594278eBfE179"),
-	pgnMainnet: common.HexToAddress("0xb26Fd985c5959bBB382BAFdD0b879E149e48116c"),
-	zoraGoerli: common.HexToAddress("0xDb9F51790365e7dc196e7D072728df39Be958ACe"),
-	zoraMainnet: common.HexToAddress("0x1a0ad011913A150f69f6A19DF447A0CfD9551054"),
-}
-
 
 // SystemConfigProvider is an interface to retrieve SystemConfig variables, as registered in the onchain smart contract.
 type SystemConfigProvider interface {
@@ -112,8 +43,13 @@ func LoadOPStackRollupConfig(sysConfig SystemConfigProvider, chainID uint64) (*C
 	}
 
 	var genesisSysConfig eth.SystemConfig
-	if sysCfg, ok := genesisSysConfigs[chainID]; ok {
-		genesisSysConfig = sysCfg
+	if sysCfg, ok := superchain.GenesisSystemConfigs[chainID]; ok {
+		genesisSysConfig = eth.SystemConfig{
+			BatcherAddr: common.Address(sysCfg.BatcherAddr),
+			Overhead:    eth.Bytes32(sysCfg.Overhead),
+			Scalar:      eth.Bytes32(sysCfg.Scalar),
+			GasLimit:    sysCfg.GasLimit,
+		}
 	} else if sysConfig != nil {
 		genesisSysConfig = sysConfig.GenesisSystemConfig()
 	} else {
@@ -121,8 +57,8 @@ func LoadOPStackRollupConfig(sysConfig SystemConfigProvider, chainID uint64) (*C
 	}
 
 	var depositContractAddress common.Address
-	if addr, ok := depositContractAddrs[chainID]; ok {
-		depositContractAddress = addr
+	if addrs, ok := superchain.Addresses[chainID]; ok {
+		depositContractAddress = common.Address(addrs.OptimismPortalProxy)
 	} else if sysConfig != nil {
 		depositContractAddress = sysConfig.DepositContractAddress()
 	} else {
