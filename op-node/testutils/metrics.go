@@ -44,6 +44,12 @@ func (t *TestDerivationMetrics) RecordChannelInputBytes(inputCompressedBytes int
 	}
 }
 
+func (t *TestDerivationMetrics) RecordHeadChannelOpened() {
+}
+
+func (t *TestDerivationMetrics) RecordChannelTimedOut() {
+}
+
 type TestRPCMetrics struct{}
 
 func (n *TestRPCMetrics) RecordRPCServerRequest(method string) func() {

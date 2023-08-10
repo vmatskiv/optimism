@@ -66,6 +66,8 @@ type Metricer interface {
 	RecordSequencerSealingTime(duration time.Duration)
 	Document() []metrics.DocumentedMetric
 	RecordChannelInputBytes(num int)
+	RecordHeadChannelOpened()
+	RecordChannelTimedOut()
 	// P2P Metrics
 	SetPeerScores(allScores []store.PeerScores)
 	ClientPayloadByNumberEvent(num uint64, resultCode byte, duration time.Duration)
@@ -700,6 +702,12 @@ func (m *Metrics) RecordChannelInputBytes(inputCompressedBytes int) {
 	m.ChannelInputBytes.Add(float64(inputCompressedBytes))
 }
 
+func (m *Metrics) RecordHeadChannelOpened() {
+}
+
+func (m *Metrics) RecordChannelTimedOut() {
+}
+
 func (m *Metrics) RecordPeerUnban() {
 	m.PeerUnbans.Inc()
 }
@@ -828,6 +836,12 @@ func (n *noopMetricer) PayloadsQuarantineSize(int) {
 }
 
 func (n *noopMetricer) RecordChannelInputBytes(int) {
+}
+
+func (n *noopMetricer) RecordHeadChannelOpened() {
+}
+
+func (n *noopMetricer) RecordChannelTimedOut() {
 }
 
 func (n *noopMetricer) RecordPeerUnban() {
